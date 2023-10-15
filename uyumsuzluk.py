@@ -2,27 +2,24 @@ import requests
 import json
 import time
 
-# Tüm kripto paraların listesini almak için url
 url = 'https://fapi.binance.com/fapi/v1/exchangeInfo'
 
-# veri çekme isteği
 response = requests.get(url)
 data = json.loads(response.text)
 
-# Tüm kripto paraların listesini al
 symbols = set([d['symbol'] for d in data['symbols']])
 symbols_found = set()
 
-# 1 saatlik verileri çekmek için url
+
 url = 'https://fapi.binance.com/fapi/v1/klines?interval=4h&symbol={}'
 
 while True:
     for symbol in symbols:
-    # veri çekme isteği
+   
         response = requests.get(url.format(symbol))
         data = json.loads(response.text)
 
-        # pozitif ve negatif uyumsuzluk tespiti için kod
+        
         for i in range(len(data)-1):
             current_close = float(data[i][4])
             current_high = float(data[i][2])
